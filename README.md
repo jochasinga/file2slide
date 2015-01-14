@@ -21,6 +21,10 @@ Install **python-pptx** and **Wand** with `pip`
 
     $ pip install python-pptx
     $ pip install Wand
+
+or install the easy way using requirements.txt file inside the directory.
+
+    $ pip install -r requirements.txt
     
 To install **Imagemagick**, either install using a [binary for your OS](http://www.imagemagick.org/script/binary-releases.php) or use your package manager like [Homebrew](http://brew.sh/) or [Macport](https://www.macports.org/).
 
