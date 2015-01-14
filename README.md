@@ -33,6 +33,22 @@ To install **Imagemagick**, either install using a [binary for your OS](http://w
     
 How to use
 ----------
+
+Set up your image directory so it looks like this:
+
+    images/
+    ├── image1.jpg
+    ├── image2.gif
+    ├── image3.png
+    ├── image4.pdf
+    ├── ...
+    └── crop/
+        ├── image1.png
+        ├── image2.pdf
+        └── ...
+
+The directory and the image names can be anything you like. The only requirement is the subdirectory where you place images you want to crop must be named *crop*.
+	
 Just run the script with Python and the prompt will pretty much lead you through the options.
 
     $ python file2slide.py
@@ -43,9 +59,13 @@ Just run the script with Python and the prompt will pretty much lead you through
 + Creates a presentation file (.pptx) based on it.
 + Looks for a subdirectory named *crop*
 + Reads the files and convert PDFs to images accordingly. 
-+ Lets you customize the cropping for every image in *crop*.
 + Lets you customize the margins for every image relative to the slide.
++ Lets you customize the cropping for every image in *crop/*.
 + Creates each slide for every image and save the file as .pptx.
++ Takes a directory where you want to save the presentation, or just
+  save to the image directory as a default if only a filename is given.
+
+
 
 
 
