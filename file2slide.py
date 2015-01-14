@@ -73,6 +73,11 @@ def filter_files(path):
                 elif sf.lower().endswith('.pdf'):
                     pdf2image(os.path.join(root, sf), 0)
                 '''
+                subfiles = os.listdir(root)
+                for sf in subfiles:
+                    if sf.lower().endswith(('.jpg', '.png', '.jpeg', '.gif', '.tiff',)):
+                        yield os.path.join(root, sf)
+
         elif os.path.isfile(root):
             if root.lower().endswith(('.jpg', '.png', '.jpeg', '.gif', '.tiff',)):
                 yield root
