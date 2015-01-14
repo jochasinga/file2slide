@@ -27,8 +27,9 @@ def crop_image(path):
 
     left = int(raw_input("LEFT CROP: "))
     top = int(raw_input("TOP CROP: "))
-#    right = raw_input(float("RIGHT CROP: ").strip())
-#    bottom = raw_input(float("BOTTOM CROP: ").strip())
+    # TODO: Figure out how to configure right and bottom crop
+    #right = raw_input(float("RIGHT CROP: ").strip())
+    #bottom = raw_input(float("BOTTOM CROP: ").strip())
 
     for sf in subfiles:
         if os.path.join(path, sf).lower().endswith(('.jpg', '.png', '.jpeg', '.gif', '.tiff',)):
@@ -36,7 +37,6 @@ def crop_image(path):
             with Image(filename=os.path.join(path, sf)) as img:
                 img.crop(left=left, top=top, width=img.width, height=img.height)
                 img.save(filename=os.path.join(path, sf))
-                #yield path
 
 def pdf2image(path, *pages):
     # converting first page into JPG
@@ -46,6 +46,7 @@ def pdf2image(path, *pages):
             with Image(filename=newpath) as img:
                 imagepath = os.path.splitext(path)[0] + '.jpg'
                 img.save(filename=imagepath)
+                # TODO: Refactor so that yielding is done only in filter_files()
                 yield imagepath
 
 # Filter files and images
@@ -64,15 +65,7 @@ def filter_files(path):
   + OR /images for relative path.\r
 ############################################################\n
                 """ 
-                # This doesn't run
                 crop_image(root)
-                '''
-                if sf.lower().endswith(('.jpg', '.png', '.jpeg', '.gif', '.tiff',)):
-                    crop_image(os.path.join(root, sf))
-
-                elif sf.lower().endswith('.pdf'):
-                    pdf2image(os.path.join(root, sf), 0)
-                '''
                 subfiles = os.listdir(root)
                 for sf in subfiles:
                     if sf.lower().endswith(('.jpg', '.png', '.jpeg', '.gif', '.tiff',)):
