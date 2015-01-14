@@ -5,7 +5,7 @@ from pptx.util import Inches
 from wand.image import Image
 import os, os.path
 
-############# PPTX LAYOUT STYLE ###############
+
 layoutMode = {
     'TITLE'                : 0, 
     'TITLE_AND_CONTENT'    : 1, 
@@ -20,6 +20,24 @@ layoutMode = {
     ''                     : 6
 }
 
+# Crop images
+def crop_image(path):
+    print "Entering crop_image()"
+    subfiles = os.listdir(path)
+
+    left = int(raw_input("LEFT CROP: "))
+    top = int(raw_input("TOP CROP: "))
+#    right = raw_input(float("RIGHT CROP: ").strip())
+#    bottom = raw_input(float("BOTTOM CROP: ").strip())
+
+    for sf in subfiles:
+        if os.path.join(path, sf).lower().endswith(('.jpg', '.png', '.jpeg', '.gif', '.tiff',)):
+            print "cropping %s" % (os.path.join(path, sf))
+            with Image(filename=os.path.join(path, sf)) as img:
+                img.crop(left=left, top=top, width=img.width, height=img.height)
+                img.save(filename=os.path.join(path, sf))
+                #yield path
+
 def pdf2image(path, *pages):
     # converting first page into JPG
     if pages:
@@ -30,27 +48,6 @@ def pdf2image(path, *pages):
                 img.save(filename=imagepath)
                 yield imagepath
 
-# Crop images
-def crop_image(path):
-
-    print """ 
-    ######################### CROP IMAGES #######################\r
-      + Set CROPPING for all images inside 'crop' directory.\r
-      + The values are LEFT, TOP, RIGHT, and BOTTOM.\r
-      + OR /images for relative path.\r
-    #############################################################\n
-    """ 
-    left = raw_input(float("LEFT CROP: ").strip())
-    top = raw_input(float("TOP CROP: ").strip())
-    right = raw_input(float("RIGHT CROP: ").strip())
-    bottom = raw_input(float("BOTTOM CROP: ").strip())
-
-    with Image(filename=path) as img:
-        img.crop(left=left, top=top, right=right, bottom=bottom)
-        img.save(filename=path)
-        yield path
-
-
 # Filter files and images
 def filter_files(path):
     files = os.listdir(path)
@@ -58,16 +55,24 @@ def filter_files(path):
         root = os.path.join(path, f)
         if os.path.isdir(root):
             print "Expecting FILE, got DIR!"
-            # TODO: call function to access the subdirectory 
-            # if the subdirectory's name is crop
-            # print the option for cropping
-            if os.path.basename(path) == 'crop':
-                if root.lower().endswith(('.jpg', '.png', '.jpeg', '.gif', '.tiff',)):
-                    cropimage(root)
+            if os.path.basename(root) == 'crop':
+                print "Found a subdirectory named 'crop'"
+                print """ 
+######################## CROP IMAGES #######################\r
+  + Set CROPPING for all images inside 'crop' directory.\r
+  + The values are LEFT, TOP, RIGHT, and BOTTOM.\r
+  + OR /images for relative path.\r
+############################################################\n
+                """ 
+                # This doesn't run
+                crop_image(root)
+                '''
+                if sf.lower().endswith(('.jpg', '.png', '.jpeg', '.gif', '.tiff',)):
+                    crop_image(os.path.join(root, sf))
 
-                elif root.lower().endswith('.pdf'):
-                    pdf2image(root, 0)
-
+                elif sf.lower().endswith('.pdf'):
+                    pdf2image(os.path.join(root, sf), 0)
+                '''
         elif os.path.isfile(root):
             if root.lower().endswith(('.jpg', '.png', '.jpeg', '.gif', '.tiff',)):
                 yield root
